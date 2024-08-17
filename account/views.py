@@ -3,14 +3,17 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .forms import UserRegistrationForm, UserLoginForm
-
+from .forms import UserRegistrationForm, UserLoginForm, UserEditForm, ProfileEditForm
+from django.urls import reverse
+from .models import Profile
 
 def user_register(request):
     if request.method == "POST":
         form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
-            form.save()
+            new_user = form.save(commit=False)
+            # Profile.objects.create(user=new_user)
+            new_user.save()
             return redirect("login")
     else:
         form = UserRegistrationForm()
@@ -50,5 +53,20 @@ def user_login(request):
 def dashboard(request):
     return render(request, "account/dashboard.html") 
 
-def reset_password(request):
-    pass
+@login_required
+def user_edit(request):
+    if request.method == "POST":
+        user_form = UserEditForm(request.POST or None, instance=request.user)
+        profile_form = ProfileEditForm(request.POST or None, request.FILES, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect(reverse("edit"))
+    else:
+        user_form = UserEditForm(instance=request.user)
+        profile_form = ProfileEditForm(instance=request.user.profile)
+    return render(
+        request,
+        "account/edit.html",
+        {"user_form": user_form, "profile_form": profile_form}
+    )
