@@ -127,3 +127,12 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "account.authenticate.EmailBackend",
 ]
+
+LOGIN_URL = "/account/login/"
+LOGIN_REDIRECT_URL = "/account/dashboard/"
+LOGOUT_REDIRECT_URL = "/account/login/"
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_HOST = "smtp.gmail.com"
+# EMAIL_POST = 587
+# EMAIL_USE_TLS = True

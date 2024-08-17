@@ -49,3 +49,6 @@ def user_login(request):
 @login_required
 def dashboard(request):
     return render(request, "account/dashboard.html") 
+
+def reset_password(request):
+    pass
