@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     {% if form.errors %}
         <p>Your username and password didn't match. Please try again.</p>
     {% endif %}
@@ -13,7 +21,7 @@
         <p>Please login to see this page.</p>
         {% endif %}
     {% endif %}
-    
+
     <form method="POST" action="{% url 'login' %}">
         {% csrf_token %}
         <table>
@@ -30,4 +38,14 @@
         <input type="hidden" name="next" value="{{ next }}">
     </form>
     <p><a href="{% url 'password_reset' %}">Forget your password?</a></p>
+
+    <div class="social">
+        <ul>
+            <li class="google">
+                <a href="{% url 'social:begin' 'google-oauth2' %}">
+                    Sign in with Google
+                </a>
+            </li>
+        </ul>
+    </div>
 {% endblock content %}

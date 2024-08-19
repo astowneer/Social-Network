@@ -1,19 +1,20 @@
+from django.urls import reverse
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegistrationForm, UserLoginForm, UserEditForm, ProfileEditForm
-from django.urls import reverse
 from .models import Profile
+
 
 def user_register(request):
     if request.method == "POST":
         form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
-            new_user = form.save(commit=False)
-            # Profile.objects.create(user=new_user)
-            new_user.save()
+            form.save()
+            messages.success(request, "User successfully register!")
             return redirect("login")
     else:
         form = UserRegistrationForm()
@@ -33,7 +34,9 @@ def user_login(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 if user.is_active:
+                    messages.add_message(request, messages.SUCCESS, "Hello world.")
                     login(request, user)
+                    # messages.success(request, "Profile details updated.")
                     return redirect("dashboard")
             else:
                 return render(
@@ -49,9 +52,11 @@ def user_login(request):
         {"form": form}
     )
 
+
 @login_required
 def dashboard(request):
     return render(request, "account/dashboard.html") 
+
 
 @login_required
 def user_edit(request):
