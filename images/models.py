@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.db import models
 from django.conf import settings
 
@@ -17,6 +18,9 @@ class Image(models.Model):
         blank=True,
         related_name="image_likes"
     )
+
+    def get_absolute_url(self):
+        return reverse("image:detail", args=[self.id,])
 
     def __str__(self):
         return self.title

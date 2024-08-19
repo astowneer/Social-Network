@@ -9,7 +9,11 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        <h3>OKEY</h3>
-        <h4>You can edit your <a href="{% url 'edit' %}">profile</a></h4>
+        <h4>You can edit your <a href="{% url 'edit' %}">profile</a>. Also you can <a href="{% url 'password_reset' %}">reset password</a></h4>
+
+        {% with total_images_created=request.user.images.count %}
+        <h3>You bookmark {{ total_images_created }} image{{ total_images_created|pluralize }}</h3>
+        <p>Drag the following button to bookmark images from other websites <a href="javascript:{% include 'bookmarklet_launcher.js' %}">Bookmark it</a></p>
+        {% endwith %}
     {% endif %}
 {% endblock content %}

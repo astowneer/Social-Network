@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
     # "corsheaders", 
+
     'images.apps.ImagesConfig',
     'account.apps.AccountConfig',
     'django.contrib.admin',
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django_extensions',
     'social_django',
+    'easy_thumbnails',
 ]
 
 MIDDLEWARE = [
