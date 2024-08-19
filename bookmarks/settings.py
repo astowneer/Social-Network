@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
     # "corsheaders", 
+    'images.apps.ImagesConfig',
     'account.apps.AccountConfig',
     'django.contrib.admin',
     'django.contrib.auth',
