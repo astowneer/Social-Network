@@ -37,8 +37,8 @@ def image_detail(request, id):
 @login_required
 @require_POST
 def image_like(request):
-    image_id = request.GET.get("id")
-    action = request.GET.get("action")
+    image_id = request.POST.get("id")
+    action = request.POST.get("action")
     if image_id and action:
         try:
             image = Image.objects.get(id=image_id)
@@ -49,7 +49,7 @@ def image_like(request):
             return JsonResponse({"status": "ok"})
         except Image.DoesNotExist:
             pass
-    return JsonResponse({"status": "error"})
+    return JsonResponse({"status", "error"})
 
 @login_required
 def image_list(request):

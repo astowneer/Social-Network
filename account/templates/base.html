@@ -47,7 +47,6 @@
             const csrftoken = Cookies.get('csrftoken');
             document.addEventListener("DOMContentLoaded", (event) => {
                 {% block domready %}
-                    const url = "{% url 'images:like' %}"
                 {% endblock domready %}
             })
         </script>
