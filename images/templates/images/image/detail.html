@@ -6,7 +6,6 @@
     <a href="{{ image.image.url }}">
         <img src="{% thumbnail image.image 150x0 %}" class="image-detail">
     </a>
- 
     {% with total_likes=image.like.count users_like=image.like.all %}
     <div>
         <span class="count">
@@ -16,8 +15,7 @@
         <span class="count">
             {{ total_views }} view{{ total_views|pluralize }}
         </span>
-        <a href="#" data-id="{{ image.id }}" data-action="{% if request.user in users_like %}un{% endif %}like"
-    class="like button">
+        <a href="#" data-id="{{ image.id }}" data-action="{% if request.user in users_like %}un{% endif %}like" class="like button">
           {% if request.user not in users_like %}
             Like
           {% else %}
