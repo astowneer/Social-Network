@@ -8,7 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from .forms import UserRegistrationForm, UserLoginForm, UserEditForm, ProfileEditForm
 from .models import Profile, Contact
-
+from actions.models import Action
+from actions.utils import create_action
 
 def user_register(request):
     if request.method == "POST":
@@ -56,7 +57,12 @@ def user_login(request):
 
 @login_required
 def dashboard(request):
-    return render(request, "account/dashboard.html") 
+    actions = Action.objects.exclude(user=request.user)
+    following_ids = request.user.following.values_list("id", flat=True)
+    if following_ids:
+        actions = actions.filter(user__id__in=following_ids)
+    actions = actions.select_related("user", "user__profile")[:10]
+    return render(request, "account/dashboard.html", {"actions": actions}) 
 
 
 @login_required
@@ -102,7 +108,6 @@ def user_detail(request, username):
 def user_follow(request):
     user_id = request.POST.get('id')
     action = request.POST.get('action')
-    print(action)
     if user_id and action:
         try:
             user = User.objects.get(id=user_id)
@@ -111,6 +116,7 @@ def user_follow(request):
                     user_from=request.user,
                     user_to=user
                 ) 
+                create_action(request.user, "follows", user)
             else:
                 Contact.objects.filter(
                     user_from=request.user,

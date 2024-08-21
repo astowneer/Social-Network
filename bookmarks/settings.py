@@ -21,8 +21,7 @@ ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    # "corsheaders", 
-
+    'actions.apps.ActionsConfig',
     'images.apps.ImagesConfig',
     'account.apps.AccountConfig',
     'django.contrib.admin',
@@ -35,14 +34,15 @@ INSTALLED_APPS = [
     'django_extensions',
     'social_django',
     'easy_thumbnails',
+    'debug_toolbar'
 ]
 
 MIDDLEWARE = [
-    # "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -154,3 +154,11 @@ SOCIAL_AUTH_PIPELINE = (
 ABSOLUTE_URL_OVERRIDES = {
     "auth.user": lambda u: reverse_lazy("user_detail", args=[u.username])
 }
+
+INTERNAL_IPS = [
+    "127.0.0.1"
+]
+
+REDIS_HOST = "localhost"
+REDIS_PORT = 6379
+REDIS_DB = 0

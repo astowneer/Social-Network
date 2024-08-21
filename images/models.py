@@ -18,6 +18,7 @@ class Image(models.Model):
         blank=True,
         related_name="image_likes"
     )
+    total_likes = models.PositiveIntegerField(default=0)
 
     def get_absolute_url(self):
         return reverse("images:detail", args=[self.id])

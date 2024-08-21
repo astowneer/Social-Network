@@ -1,0 +1,14 @@
+{% load thumbnail %}
+
+<div>
+    <h3>
+        <a href="{{ action.user.get_absolute_url }}">
+            {{ action.user }}
+        </a>
+        {{ action.verb }} {{ action.target }}
+    </h3>
+</div>
+
+{% if action.user.profile.photo %}
+    <img src="{% thumbnail action.user.profile.photo 180x180 %}">
+{% endif %}

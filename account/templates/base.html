@@ -16,10 +16,10 @@
                     <a class="nav-link active" aria-current="page" href="{% url 'dashboard' %}">Home</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Images</a>
+                    <a class="nav-link" href="{% url 'images:list' %}">Images</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">People</a>
+                    <a class="nav-link" href="{% url 'user_list' %}">People</a>
                   </li>
                   {% if user.is_authenticated %}
                     <li class="nav-item">
