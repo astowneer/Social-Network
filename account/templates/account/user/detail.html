@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+
+{% block content %}
+<div>
+    <div>
+        <a href="{{ user.get_absolute_url }}">
+            <img src="{% thumbnail user.profile.photo 180x180 %}">
+        </a>
+        {% with total_follower=user.following.count %}
+        <span class="count">
+            <span class="total">{{ total_follower }}</span>
+            follower{{ total_follower|pluralize }}
+        </span>
+        <a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.following.all %}un{% endif %}follow" class="follow button">
+            {% if request.user not in user.following.all %}
+                Follow
+            {% else %}
+                Unfollow
+            {% endif %}
+        </a>
+        {% endwith %}
+        <a href="{{ user.get_absolute_url }}">
+            <p>{{ user.get_full_name }}</p>
+        </a>
+    </div>
+</div>
+{% endblock content %}
+
+{% block domready %}
+    const url = '{% url "user_follow" %}';
+
+    var options = {
+        method: "POST",
+        headers: {"X-CSRFToken": csrftoken},
+        mode: "same-origin",
+    }
+
+    document.querySelector("a.follow").addEventListener("click", function(e) {
+        e.preventDefault();
+        var followButton = this;
+       
+        let formData = new FormData();
+        formData.append("id", followButton.dataset.id);
+        formData.append("action", followButton.dataset.action);
+        options["body"] = formData;
+
+        fetch(url, options)
+        .then(response => response.json())
+        .then(data => {
+            if (data["status"] === "ok") {
+                var previousAction = followButton.dataset.action;
+
+                var action = previousAction === "follow" ? "unfollow" : "follow";
+                followButton.dataset.action = action;
+                followButton.innerHTML = action;
+
+                var followerCount = document.querySelector("span.count .total");
+                var totalFollower = parseInt(followerCount.innerHTML);
+                followerCount.innerHTML = previousAction === "follow" ? totalFollower + 1 : totalFollower - 1;
+            }
+        })
+    })
+{% endblock domready %}

@@ -2,7 +2,6 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, 
 from django.urls import path
 from . import views
 
-
 urlpatterns = [
     path("dashboard/", views.dashboard, name="dashboard"),
     path("register/", views.user_register, name="register"),
@@ -34,4 +33,7 @@ urlpatterns = [
     ),
 
     path("edit/", views.user_edit, name="edit"),
+    path("users/", views.user_list, name="user_list"),
+    path("users/follow/", views.user_follow, name="user_follow"),
+    path("users/<username>/", views.user_detail, name="user_detail"),
 ]
